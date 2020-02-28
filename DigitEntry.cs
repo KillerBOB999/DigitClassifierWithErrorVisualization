@@ -10,27 +10,27 @@ namespace DigitClassifierWithErrorVisualization
     {
         // STATIC VARIABLES-------------------------------------------------------------------
         // 0-inclusive number of possible classes
-        static readonly int NUM_POSSIBLE_DIGITS = 4;
+        public static readonly int NUM_POSSIBLE_DIGITS = 10;
 
         // Maximum of integer values used to represent each pixel
-        static readonly int MAX_PIX_VALUE = 16;
+        public static readonly int MAX_PIX_VALUE = 16;
 
         // Number of pixel values that represent the digit
-        static readonly int NUM_PIX_VALUES = 64;
+        public static readonly int NUM_PIX_VALUES = 64;
 
         // Desired output for incorrect classes
-        static readonly float DESIRED_INCORRECT = 0.1f;
+        public static readonly float DESIRED_INCORRECT = 0.1f;
 
         // Desired output for correct classes
-        static readonly float DESIRED_CORRECT = 0.9f;
+        public static readonly float DESIRED_CORRECT = 0.9f;
 
         // PRIVATE VARIABLES------------------------------------------------------------------
         // Values that represent the data. Should be normalized and have a size of 64.
-        private List<float> dataValues;
+        private List<float> dataValues = new List<float>();
 
         // Desired output vector of classifier where the index of the maximum value . Should
         // have a size of NUM_POSSIBLE_DIGITS.
-        private List<float> desiredOutputs;
+        private List<float> desiredOutputs = new List<float>();
 
         // Actual class of the digit
         private readonly int actualClass;
@@ -40,7 +40,7 @@ namespace DigitClassifierWithErrorVisualization
         public ref List<float> getDesiredOutputs() { return ref desiredOutputs; }
 
         // CONSTRUCTORS-----------------------------------------------------------------------
-        public DigitEntry(ref List<float> rawData)
+        public DigitEntry(List<float> rawData)
         {
             // Set the actual class value
             actualClass = (int)rawData[rawData.Count - 1];
@@ -69,13 +69,12 @@ namespace DigitClassifierWithErrorVisualization
         // represents the actual digit classification.
         private void setDesiredOutputs()
         {
-            // Define the list type
-            desiredOutputs = new List<float>(NUM_POSSIBLE_DIGITS);
-
+            float initialValue;
             // Initialize all values to 0.1
-            for (int i = 0; i < desiredOutputs.Count; ++i)
+            for (int i = 0; i < NUM_POSSIBLE_DIGITS; ++i)
             {
-                desiredOutputs[i] = i == actualClass ? DESIRED_CORRECT : DESIRED_INCORRECT;
+                initialValue = i == actualClass ? DESIRED_CORRECT : DESIRED_INCORRECT;
+                desiredOutputs.Add(initialValue);
             }
         }
     }
