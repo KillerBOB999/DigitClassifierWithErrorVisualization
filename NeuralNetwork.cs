@@ -8,5 +8,6 @@ namespace DigitClassifierWithErrorVisualization
 {
     class NeuralNetwork
     {
+
     }
 }
