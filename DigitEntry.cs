@@ -20,10 +20,10 @@ namespace DigitClassifierWithErrorVisualization
         public static readonly int NUM_PIX_VALUES = 64;
 
         // Desired output for incorrect classes
-        public static readonly double DESIRED_INCORRECT = 0.1f;
+        public static readonly double DESIRED_INCORRECT = 0.01;
 
         // Desired output for correct classes
-        public static readonly double DESIRED_CORRECT = 0.9f;
+        public static readonly double DESIRED_CORRECT = 0.99;
 
         // PRIVATE VARIABLES------------------------------------------------------------------
         // Values that represent the data. Should be normalized and have a size of 64.

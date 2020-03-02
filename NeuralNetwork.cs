@@ -18,7 +18,7 @@ namespace DigitClassifierWithErrorVisualization
         List<Matrix<double>> hiddenLayers;
         Matrix<double> outputLayer;
 
-        Matrix<double> desiredOutput;
+        Matrix<double> desiredOutputLayer;
 
         // Number of Neurons in each layer where [0] == input and [Count-1] == output
         public List<int> nodesPerLayer = new List<int>();
@@ -28,7 +28,7 @@ namespace DigitClassifierWithErrorVisualization
             // Initialize the layers themselves
             inputLayer = Matrix<double>.Build.Dense(numInputs, 1);
             outputLayer = Matrix<double>.Build.Dense(numOutputs, 1);
-            desiredOutput = Matrix<double>.Build.Dense(numOutputs, 1);
+            desiredOutputLayer = Matrix<double>.Build.Dense(numOutputs, 1);
 
             nodesPerLayer.Add(numInputs);
             nodesPerLayer.Add(numOutputs);
@@ -55,7 +55,7 @@ namespace DigitClassifierWithErrorVisualization
 
         public void Train(List<double> input, List<double> desiredOutputs, double learningRate)
         {
-            ListToMatrix(ref desiredOutputs, ref desiredOutput);
+            ListToMatrix(ref desiredOutputs, ref desiredOutputLayer);
             FeedForward(input);
             Backpropagate(desiredOutputs, learningRate);
         }
@@ -105,13 +105,38 @@ namespace DigitClassifierWithErrorVisualization
         private void Backpropagate(List<double> desiredOutputs, double learningRate)
         {
             // weight = weight - learningRate * Gradient
-            ListToMatrix(ref desiredOutputs, ref desiredOutput);
-            double error = Cost();
+            ListToMatrix(ref desiredOutputs, ref desiredOutputLayer);
+            //double error = Cost();
 
             // Derivative stuff
             // Derivative of sigmoid == sigmoid(x) * (1 - sigmoid(x))
             // Derivative of Cost == 2(actualOutput - targetOutput)
             // Derivative of the activation == activation of Layer L-1
+            for (int weightMatrixIndex = weights.Count - 1; weightMatrixIndex >= 0; --weightMatrixIndex)
+            {
+                Matrix<double> gradient = FindGradient(ref outputLayer, ref inputLayer, ref desiredOutputLayer, weights[weightMatrixIndex]);
+                weights[weightMatrixIndex] = weights[weightMatrixIndex] - learningRate * gradient;
+            }
+        }
+
+        private Matrix<double> FindGradient(ref Matrix<double> LayerL, ref Matrix<double> LayerLminus1, ref Matrix<double> targetOfLayerL, Matrix<double> weightsBetweenLayers)
+        {
+            Matrix<double> gradient = Matrix<double>.Build.Dense(weightsBetweenLayers.RowCount, weightsBetweenLayers.ColumnCount);
+            for (int rowInGradient = 0; rowInGradient < gradient.RowCount; ++rowInGradient)
+            {
+                for (int colInGradient = 0; colInGradient < gradient.ColumnCount; ++colInGradient)
+                {
+                    for (int rowInLayerLminus1 = 0; rowInLayerLminus1 < LayerLminus1.RowCount; ++rowInLayerLminus1)
+                    {
+                        gradient[rowInGradient, colInGradient] += (
+                                LayerL[rowInGradient, 0] * (1 - LayerL[rowInGradient, 0]) *
+                                2 * (LayerL[rowInGradient, 0] - targetOfLayerL[rowInGradient, 0]) *
+                                LayerLminus1[rowInLayerLminus1, 0]
+                            );
+                    }
+                }
+            }
+            return gradient;
         }
 
         // Sigmoid activation function
@@ -131,12 +156,12 @@ namespace DigitClassifierWithErrorVisualization
             return matrix;
         }
 
-        private double Cost()
+        private double Cost(ref Matrix<double> actualLayer, ref Matrix<double> desiredLayer)
         {
             double sum = 0;
-            for (int i = 0; i < desiredOutput.RowCount; ++i)
+            for (int i = 0; i < desiredLayer.RowCount; ++i)
             {
-                sum += Math.Pow(outputLayer[i, 0] - desiredOutput[i, 0], 2);
+                sum += Math.Pow(actualLayer[i, 0] - desiredLayer[i, 0], 2);
             }
             return sum;
         }
