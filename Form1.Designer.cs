@@ -71,7 +71,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.output_NodesInInput = new System.Windows.Forms.Label();
             this.label_NodesInInput = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart_MSEs = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -88,7 +88,7 @@
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_MSEs)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -108,7 +108,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.chart1);
+            this.splitContainer1.Panel2.Controls.Add(this.chart_MSEs);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 0;
@@ -401,7 +401,7 @@
             this.input_LearningRate.Name = "input_LearningRate";
             this.input_LearningRate.Size = new System.Drawing.Size(119, 20);
             this.input_LearningRate.TabIndex = 2;
-            this.input_LearningRate.Text = "0.0001";
+            this.input_LearningRate.Text = "0.00001";
             this.input_LearningRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // panel8
@@ -510,28 +510,38 @@
             this.label_NodesInInput.TabIndex = 0;
             this.label_NodesInInput.Text = "Nodes in Input:";
             // 
-            // chart1
+            // chart_MSEs
             // 
             chartArea1.Name = "chart_Display";
-            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart_MSEs.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(-1, 0);
-            this.chart1.Name = "chart1";
+            legend1.Position.Auto = false;
+            legend1.Position.Height = 8.463252F;
+            legend1.Position.Width = 30.37736F;
+            legend1.Position.X = 50F;
+            legend1.Position.Y = 3F;
+            this.chart_MSEs.Legends.Add(legend1);
+            this.chart_MSEs.Location = new System.Drawing.Point(0, 0);
+            this.chart_MSEs.Name = "chart_MSEs";
+            this.chart_MSEs.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+            this.chart_MSEs.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            series1.BorderWidth = 5;
             series1.ChartArea = "chart_Display";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.IsXValueIndexed = true;
             series1.Legend = "Legend1";
             series1.Name = "MSE on Training Set";
+            series2.BorderWidth = 5;
             series2.ChartArea = "chart_Display";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.IsXValueIndexed = true;
             series2.Legend = "Legend1";
             series2.Name = "MSE on Validation Set";
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(531, 450);
-            this.chart1.TabIndex = 0;
-            this.chart1.Text = "chart1";
+            this.chart_MSEs.Series.Add(series1);
+            this.chart_MSEs.Series.Add(series2);
+            this.chart_MSEs.Size = new System.Drawing.Size(531, 450);
+            this.chart_MSEs.TabIndex = 0;
+            this.chart_MSEs.Text = "chart1";
             // 
             // Form1
             // 
@@ -569,7 +579,7 @@
             this.panel4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_MSEs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -609,7 +619,7 @@
         private System.Windows.Forms.Button button_AddLayerWithNNodes;
         private System.Windows.Forms.TextBox input_nNodesInNewHiddenLayer;
         private System.Windows.Forms.Label label_nEquals;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_MSEs;
         private System.Windows.Forms.Label label_Incorrect;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Label output_Incorrect;

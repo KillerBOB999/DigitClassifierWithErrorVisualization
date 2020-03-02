@@ -26,10 +26,8 @@ namespace DigitClassifierWithErrorVisualization
         // Event Listeners----------------------------------------------------------
         private void button_Run_Click(object sender, EventArgs e)
         {
-            button_Run.Enabled = false;
-            button_PlayPause.Enabled = true;
-            button_Reset.Enabled = true;
             ChangeInputStates();
+            ChangeButtonStates();
             StartSimulation();
         }
 
@@ -76,6 +74,8 @@ namespace DigitClassifierWithErrorVisualization
         int epoch;
         int numCorrect;
         int numIncorrect;
+        double testingMSE;
+        double validationMSE;
         NeuralNetwork neuralNetwork;
 
         // User input variables
@@ -154,6 +154,14 @@ namespace DigitClassifierWithErrorVisualization
             input_ValidationSetPortion.Enabled = !input_ValidationSetPortion.Enabled;
         }
 
+        private void ChangeButtonStates()
+        {
+            button_AddLayerWithNNodes.Enabled = !button_AddLayerWithNNodes.Enabled;
+            button_Run.Enabled = !button_Run.Enabled;
+            button_PlayPause.Enabled = !button_PlayPause.Enabled;
+            button_Reset.Enabled = !button_Reset.Enabled;
+        }
+
         private void CollectInputs()
         {
             validationSetPortion = Convert.ToDouble(input_ValidationSetPortion.Text);
@@ -173,15 +181,8 @@ namespace DigitClassifierWithErrorVisualization
             output_Epoch.Text = epoch.ToString();
             output_Correct.Text = numCorrect.ToString();
             output_Incorrect.Text = numIncorrect.ToString();
-        }
-
-        // Train the neural network
-        private void Train()
-        {
-            foreach (DigitEntry entry in trainDigitEntries)
-            {
-                neuralNetwork.Train(entry.getDataValues(), entry.getDesiredOutputs(), learningRate);
-            }
+            chart_MSEs.Width = splitContainer1.Panel2.Width;
+            chart_MSEs.Height = splitContainer1.Panel2.Height;
         }
 
         private int FindIndexOfMax(List<double> list)
@@ -194,6 +195,16 @@ namespace DigitClassifierWithErrorVisualization
             return indexOfMax;
         }
 
+        private double CalcMSE(List<double> target, List<double> actual)
+        {
+            double mse = 0;
+            for (int i = 0; i < target.Count; ++i)
+            {
+                mse += Math.Pow(target[i] - actual[i], 2);
+            }
+            return mse;
+        }
+
         // Starting point of the main application-------------------------------------
         private void StartSimulation()
         {
@@ -201,6 +212,7 @@ namespace DigitClassifierWithErrorVisualization
             {
                 CollectInputs();
                 epoch = 0;
+
                 neuralNetwork.BuildWeightMatrices();
                 SetUpTimer();
                 while (true)
@@ -209,12 +221,24 @@ namespace DigitClassifierWithErrorVisualization
                     {
                         numCorrect = 0;
                         numIncorrect = 0;
+                        testingMSE = 0;
+                        validationMSE = 0;
+
                         foreach (DigitEntry entry in testDigitEntries)
                         {
                             List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
                             if (FindIndexOfMax(classification) == FindIndexOfMax(entry.getDesiredOutputs())) numCorrect++;
                             else numIncorrect++;
+                            testingMSE += CalcMSE(entry.getDesiredOutputs(), classification);
                         }
+                        chart_MSEs.Series[0].Points.AddXY(epoch, testingMSE / testDigitEntries.Count);
+
+                        foreach (DigitEntry entry in validationDigitEntries)
+                        {
+                            List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
+                            validationMSE += CalcMSE(entry.getDesiredOutputs(), classification);
+                        }
+                        chart_MSEs.Series[1].Points.AddXY(epoch, testingMSE / testDigitEntries.Count);
                     }
                     foreach (DigitEntry entry in trainDigitEntries)
                     {
