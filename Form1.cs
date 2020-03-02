@@ -43,9 +43,8 @@ namespace DigitClassifierWithErrorVisualization
         {
             try
             {
-                //if (epoch % 10 == 0) UpdateChart();
-                //else Train();
-                //Update();
+                Update();
+                Application.DoEvents();
             }
             catch
             {
@@ -75,7 +74,8 @@ namespace DigitClassifierWithErrorVisualization
         // Helpful variables
         Timer timer;
         int epoch;
-        Bitmap bitmap;
+        int numCorrect;
+        int numIncorrect;
         NeuralNetwork neuralNetwork;
 
         // User input variables
@@ -164,8 +164,15 @@ namespace DigitClassifierWithErrorVisualization
         {
             timer = new Timer();
             timer.Tick += Timer_Tick;
-            timer.Interval = 1; // Set interval to 0.5 seconds
+            timer.Interval = 1;
             timer.Start();
+        }
+
+        public void Update()
+        {
+            output_Epoch.Text = epoch.ToString();
+            output_Correct.Text = numCorrect.ToString();
+            output_Incorrect.Text = numIncorrect.ToString();
         }
 
         // Train the neural network
@@ -177,21 +184,45 @@ namespace DigitClassifierWithErrorVisualization
             }
         }
 
+        private int FindIndexOfMax(List<double> list)
+        {
+            int indexOfMax = 0;
+            for (int i = 0; i < list.Count; ++i)
+            {
+                indexOfMax = list[indexOfMax] < list[i] ? i : indexOfMax;
+            }
+            return indexOfMax;
+        }
+
         // Starting point of the main application-------------------------------------
         private void StartSimulation()
         {
             try
             {
                 CollectInputs();
-                bitmap = new Bitmap(splitContainer1.Panel2.Width, splitContainer1.Panel2.Height);
                 epoch = 0;
                 neuralNetwork.BuildWeightMatrices();
-                neuralNetwork.Train(
-                    trainDigitEntries[0].getDataValues(),
-                    trainDigitEntries[0].getDesiredOutputs(),
-                    learningRate
-                    );
                 SetUpTimer();
+                while (true)
+                {
+                    if (epoch % 10 == 0)
+                    {
+                        numCorrect = 0;
+                        numIncorrect = 0;
+                        foreach (DigitEntry entry in testDigitEntries)
+                        {
+                            List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
+                            if (FindIndexOfMax(classification) == FindIndexOfMax(entry.getDesiredOutputs())) numCorrect++;
+                            else numIncorrect++;
+                        }
+                    }
+                    foreach (DigitEntry entry in trainDigitEntries)
+                    {
+                        neuralNetwork.Train(entry.getDataValues(), entry.getDesiredOutputs(), learningRate);
+                    }
+                    epoch++;
+                    Application.DoEvents();
+                }
             }
             catch
             {
