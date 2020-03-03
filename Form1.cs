@@ -81,7 +81,6 @@ namespace DigitClassifierWithErrorVisualization
         bool runmain;
 
         // User input variables
-        double validationSetPortion;
         double learningRate;
 
         // Data Collection functions-------------------------------------------------
@@ -153,7 +152,6 @@ namespace DigitClassifierWithErrorVisualization
         {
             input_nNodesInNewHiddenLayer.Enabled = !input_nNodesInNewHiddenLayer.Enabled;
             input_LearningRate.Enabled = !input_LearningRate.Enabled;
-            input_ValidationSetPortion.Enabled = !input_ValidationSetPortion.Enabled;
         }
 
         private void ChangeButtonStates()
@@ -166,7 +164,6 @@ namespace DigitClassifierWithErrorVisualization
 
         private void CollectInputs()
         {
-            validationSetPortion = Convert.ToDouble(input_ValidationSetPortion.Text);
             learningRate = Convert.ToDouble(input_LearningRate.Text);
         }
 

@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title6 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button_PlayPause = new System.Windows.Forms.Button();
@@ -64,7 +64,6 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.output_NodesInOutput = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.input_ValidationSetPortion = new System.Windows.Forms.TextBox();
             this.label_ValidationSetPortion = new System.Windows.Forms.Label();
             this.label_NumberOfHiddenLayers = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -73,6 +72,7 @@
             this.output_NodesInInput = new System.Windows.Forms.Label();
             this.label_NodesInInput = new System.Windows.Forms.Label();
             this.chart_MSEs = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -397,22 +397,12 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.input_ValidationSetPortion);
+            this.panel3.Controls.Add(this.label1);
             this.panel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel3.Location = new System.Drawing.Point(135, 102);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(119, 30);
             this.panel3.TabIndex = 12;
-            // 
-            // input_ValidationSetPortion
-            // 
-            this.input_ValidationSetPortion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.input_ValidationSetPortion.Location = new System.Drawing.Point(0, 4);
-            this.input_ValidationSetPortion.Name = "input_ValidationSetPortion";
-            this.input_ValidationSetPortion.Size = new System.Drawing.Size(119, 20);
-            this.input_ValidationSetPortion.TabIndex = 3;
-            this.input_ValidationSetPortion.Text = "0.2";
-            this.input_ValidationSetPortion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label_ValidationSetPortion
             // 
@@ -487,55 +477,65 @@
             this.chart_MSEs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "chart_Display";
-            this.chart_MSEs.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Center;
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Name = "Legend1";
-            this.chart_MSEs.Legends.Add(legend2);
+            chartArea1.Name = "chart_Display";
+            this.chart_MSEs.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend1.Name = "Legend1";
+            this.chart_MSEs.Legends.Add(legend1);
             this.chart_MSEs.Location = new System.Drawing.Point(-10, 0);
             this.chart_MSEs.Name = "chart_MSEs";
             this.chart_MSEs.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             this.chart_MSEs.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            series3.ChartArea = "chart_Display";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Color = System.Drawing.Color.Red;
-            series3.IsXValueIndexed = true;
-            series3.Legend = "Legend1";
-            series3.Name = "MSE on Training Set";
-            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series4.ChartArea = "chart_Display";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Color = System.Drawing.Color.Blue;
-            series4.IsXValueIndexed = true;
-            series4.Legend = "Legend1";
-            series4.Name = "MSE on Validation Set";
-            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chart_MSEs.Series.Add(series3);
-            this.chart_MSEs.Series.Add(series4);
+            series1.ChartArea = "chart_Display";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Color = System.Drawing.Color.Red;
+            series1.IsXValueIndexed = true;
+            series1.Legend = "Legend1";
+            series1.Name = "MSE on Training Set";
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.ChartArea = "chart_Display";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Color = System.Drawing.Color.Blue;
+            series2.IsXValueIndexed = true;
+            series2.Legend = "Legend1";
+            series2.Name = "MSE on Validation Set";
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chart_MSEs.Series.Add(series1);
+            this.chart_MSEs.Series.Add(series2);
             this.chart_MSEs.Size = new System.Drawing.Size(540, 450);
             this.chart_MSEs.TabIndex = 0;
             this.chart_MSEs.Text = "chart1";
-            title4.Alignment = System.Drawing.ContentAlignment.TopCenter;
-            title4.DockedToChartArea = "chart_Display";
-            title4.IsDockedInsideChartArea = false;
-            title4.Name = "chart_Title";
-            title4.Text = "Epoch vs MSE";
-            title5.DockedToChartArea = "chart_Display";
-            title5.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
-            title5.IsDockedInsideChartArea = false;
-            title5.Name = "yAxis_Title";
-            title5.Text = "MSE";
-            title6.Alignment = System.Drawing.ContentAlignment.BottomCenter;
-            title6.DockedToChartArea = "chart_Display";
-            title6.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            title6.IsDockedInsideChartArea = false;
-            title6.Name = "xAxis_Title";
-            title6.Text = "Epoch";
-            this.chart_MSEs.Titles.Add(title4);
-            this.chart_MSEs.Titles.Add(title5);
-            this.chart_MSEs.Titles.Add(title6);
+            title1.Alignment = System.Drawing.ContentAlignment.TopCenter;
+            title1.DockedToChartArea = "chart_Display";
+            title1.IsDockedInsideChartArea = false;
+            title1.Name = "chart_Title";
+            title1.Text = "Epoch vs MSE";
+            title2.DockedToChartArea = "chart_Display";
+            title2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
+            title2.IsDockedInsideChartArea = false;
+            title2.Name = "yAxis_Title";
+            title2.Text = "MSE";
+            title3.Alignment = System.Drawing.ContentAlignment.BottomCenter;
+            title3.DockedToChartArea = "chart_Display";
+            title3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            title3.IsDockedInsideChartArea = false;
+            title3.Name = "xAxis_Title";
+            title3.Text = "Epoch";
+            this.chart_MSEs.Titles.Add(title1);
+            this.chart_MSEs.Titles.Add(title2);
+            this.chart_MSEs.Titles.Add(title3);
             this.chart_MSEs.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(22, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "0.2";
             // 
             // Form1
             // 
@@ -607,7 +607,6 @@
         private System.Windows.Forms.Label label_NodesInOutput;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label output_NodesInOutput;
-        private System.Windows.Forms.TextBox input_ValidationSetPortion;
         private System.Windows.Forms.Label output_NumberOfHiddenLayers;
         private System.Windows.Forms.Button button_AddLayerWithNNodes;
         private System.Windows.Forms.TextBox input_nNodesInNewHiddenLayer;
@@ -616,6 +615,7 @@
         private System.Windows.Forms.Label label_Accuracy;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Label output_Accuracy;
+        private System.Windows.Forms.Label label1;
     }
 }
 
