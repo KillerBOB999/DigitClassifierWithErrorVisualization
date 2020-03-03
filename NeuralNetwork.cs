@@ -94,6 +94,7 @@ namespace DigitClassifierWithErrorVisualization
                 }
             }
             outputLayer = currentProgress;
+            layers[layers.Count - 1] = outputLayer;
 
             // Convert the newly calculated output into a List
             // for easier use and for dependency segmentation
@@ -122,20 +123,20 @@ namespace DigitClassifierWithErrorVisualization
             Matrix<double> layerLminus1;
             Matrix<double> activeErrors;
 
-            for (int weightMatrixIndex = weights.Count - 1; weightMatrixIndex > 0; --weightMatrixIndex)
+            for (int weightMatrixIndex = weights.Count - 1; weightMatrixIndex >= 0; --weightMatrixIndex)
             {
-                activeLayer = layers[weightMatrixIndex];
+                activeLayer = layers[weightMatrixIndex + 1];
                 activeWeights = weights[weightMatrixIndex];
                 layerLminus1 = layers[weightMatrixIndex];
                 activeErrors = costPerNodePerLayer[weightMatrixIndex];
-                costPerNodePerLayer[weightMatrixIndex - 1] = LayerCost(ref activeLayer, ref activeErrors, ref activeWeights);
+                if (weightMatrixIndex != 0) costPerNodePerLayer[weightMatrixIndex - 1] = LayerCost(ref layerLminus1, ref activeErrors, ref activeWeights);
 
-                Matrix<double> gradient = FindGradient(activeLayer, layerLminus1, activeErrors, activeWeights);
-                weights[weightMatrixIndex] = weights[weightMatrixIndex] + learningRate * gradient;
+                Matrix<double> gradient = FindGradient(ref activeLayer, ref layerLminus1, ref activeErrors, ref activeWeights);
+                weights[weightMatrixIndex] = weights[weightMatrixIndex] - learningRate * gradient;
             }
         }
 
-        private Matrix<double> FindGradient(Matrix<double> LayerL, Matrix<double> LayerLminus1, Matrix<double> errorOfLayerL, Matrix<double> weightsBetweenLayers)
+        private Matrix<double> FindGradient(ref Matrix<double> LayerL, ref Matrix<double> LayerLminus1, ref Matrix<double> errorOfLayerL, ref Matrix<double> weightsBetweenLayers)
         {
             Matrix<double> gradient = Matrix<double>.Build.Dense(weightsBetweenLayers.RowCount, weightsBetweenLayers.ColumnCount);
             for (int rowInGradient = 0; rowInGradient < gradient.RowCount; ++rowInGradient)
@@ -148,6 +149,7 @@ namespace DigitClassifierWithErrorVisualization
                                 LayerL[rowInGradient, 0] * (1 - LayerL[rowInGradient, 0]) *
                                 2 * errorOfLayerL[rowInGradient, 0] *
                                 LayerLminus1[rowInLayerLminus1, 0]
+                                //weightsBetweenLayers[rowInGradient, colInGradient]
                             );
                     }
                 }

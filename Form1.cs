@@ -72,11 +72,13 @@ namespace DigitClassifierWithErrorVisualization
         // Helpful variables
         Timer timer;
         int epoch;
-        int numCorrect;
-        int numIncorrect;
-        double testingMSE;
+        double numCorrect;
+        double numIncorrect;
+        double trainingMSE;
         double validationMSE;
         NeuralNetwork neuralNetwork;
+        bool runsim;
+        bool runmain;
 
         // User input variables
         double validationSetPortion;
@@ -179,8 +181,9 @@ namespace DigitClassifierWithErrorVisualization
         public void Update()
         {
             output_Epoch.Text = epoch.ToString();
-            output_Correct.Text = numCorrect.ToString();
-            output_Incorrect.Text = numIncorrect.ToString();
+            output_Accuracy.Text = (100 * numCorrect / (numCorrect + numIncorrect)).ToString() + "%";
+            output_TrainingMSE.Text = trainingMSE.ToString();
+            output_ValidationMSE.Text = validationMSE.ToString();
             chart_MSEs.Width = splitContainer1.Panel2.Width;
             chart_MSEs.Height = splitContainer1.Panel2.Height;
         }
@@ -212,39 +215,56 @@ namespace DigitClassifierWithErrorVisualization
             {
                 CollectInputs();
                 epoch = 0;
+                runsim = true;
+                runmain = true;
+                chart_MSEs.Visible = true;
 
                 neuralNetwork.BuildWeightMatrices();
                 SetUpTimer();
-                while (true)
+                while (runmain)
                 {
-                    if (epoch % 10 == 0)
+                    while (runsim)
                     {
-                        numCorrect = 0;
-                        numIncorrect = 0;
-                        testingMSE = 0;
-                        validationMSE = 0;
-
-                        foreach (DigitEntry entry in testDigitEntries)
+                        if (epoch % 10 == 0)
                         {
-                            List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
-                            if (FindIndexOfMax(classification) == FindIndexOfMax(entry.getDesiredOutputs())) numCorrect++;
-                            else numIncorrect++;
-                            testingMSE += CalcMSE(entry.getDesiredOutputs(), classification);
-                        }
-                        chart_MSEs.Series[0].Points.AddXY(epoch, testingMSE / testDigitEntries.Count);
+                            numCorrect = 0;
+                            numIncorrect = 0;
+                            trainingMSE = 0;
+                            validationMSE = 0;
 
-                        foreach (DigitEntry entry in validationDigitEntries)
-                        {
-                            List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
-                            validationMSE += CalcMSE(entry.getDesiredOutputs(), classification);
+                            foreach (DigitEntry entry in testDigitEntries)
+                            {
+                                List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
+                                if (FindIndexOfMax(classification) == FindIndexOfMax(entry.getDesiredOutputs())) numCorrect++;
+                                else numIncorrect++;
+                            }
+
+                            foreach (DigitEntry entry in trainDigitEntries)
+                            {
+                                List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
+                                trainingMSE += CalcMSE(entry.getDesiredOutputs(), classification);
+                            }
+                            trainingMSE /= trainDigitEntries.Count;
+                            chart_MSEs.Series[0].Points.AddXY(epoch, trainingMSE);
+
+                            foreach (DigitEntry entry in validationDigitEntries)
+                            {
+                                List<double> classification = neuralNetwork.FeedForward(entry.getDataValues());
+                                validationMSE += CalcMSE(entry.getDesiredOutputs(), classification);
+                            }
+                            validationMSE /= validationDigitEntries.Count;
+                            chart_MSEs.Series[1].Points.AddXY(epoch, validationMSE);
                         }
-                        chart_MSEs.Series[1].Points.AddXY(epoch, testingMSE / testDigitEntries.Count);
+                        else
+                        {
+                            foreach (DigitEntry entry in trainDigitEntries)
+                            {
+                                neuralNetwork.Train(entry.getDataValues(), entry.getDesiredOutputs(), learningRate);
+                            }
+                        }
+                        epoch++;
+                        Application.DoEvents();
                     }
-                    foreach (DigitEntry entry in trainDigitEntries)
-                    {
-                        neuralNetwork.Train(entry.getDataValues(), entry.getDesiredOutputs(), learningRate);
-                    }
-                    epoch++;
                     Application.DoEvents();
                 }
             }
@@ -253,6 +273,31 @@ namespace DigitClassifierWithErrorVisualization
                 MessageBox.Show("Oops, something went wrong!", "ERROR");
                 button_Reset.PerformClick();
             }
+        }
+
+        private void button_PlayPause_Click(object sender, EventArgs e)
+        {
+            string resume = "Resume Simulation";
+            string pause = "Pause Simulation";
+            button_PlayPause.Text = runsim ? resume : pause;
+            runsim = !runsim;
+        }
+
+        private void button_Reset_Click(object sender, EventArgs e)
+        {
+            ChangeButtonStates();
+            ChangeInputStates();
+            runsim = false;
+            runmain = false;
+            button_PlayPause.Text = "Pause Simulation";
+            chart_MSEs.Series[0].Points.Clear();
+            chart_MSEs.Series[1].Points.Clear();
+            chart_MSEs.Visible = false;
+            neuralNetwork = new NeuralNetwork(
+                Convert.ToInt32(output_NodesInInput.Text), // Nodes in input layer
+                Convert.ToInt32(output_NodesInOutput.Text) // Nodes in output layer
+                );
+            output_NumberOfHiddenLayers.Text = (neuralNetwork.nodesPerLayer.Count - 2).ToString();
         }
     }
 }

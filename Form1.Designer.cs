@@ -32,23 +32,23 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button_PlayPause = new System.Windows.Forms.Button();
             this.button_Reset = new System.Windows.Forms.Button();
             this.button_Run = new System.Windows.Forms.Button();
             this.groupBox_RunTimeData = new System.Windows.Forms.GroupBox();
-            this.label_Incorrect = new System.Windows.Forms.Label();
+            this.label_Accuracy = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.output_Incorrect = new System.Windows.Forms.Label();
-            this.label_Correct = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.output_Correct = new System.Windows.Forms.Label();
+            this.output_Accuracy = new System.Windows.Forms.Label();
             this.label_MSEonValidationSet = new System.Windows.Forms.Label();
             this.label_MSEonTrainingSet = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.output_NumMisclassified = new System.Windows.Forms.Label();
+            this.output_ValidationMSE = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.output_OldCalculatedLine = new System.Windows.Forms.Label();
+            this.output_TrainingMSE = new System.Windows.Forms.Label();
             this.container = new System.Windows.Forms.Panel();
             this.output_Epoch = new System.Windows.Forms.Label();
             this.label_Epoch = new System.Windows.Forms.Label();
@@ -78,7 +78,6 @@
             this.splitContainer1.SuspendLayout();
             this.groupBox_RunTimeData.SuspendLayout();
             this.panel9.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.container.SuspendLayout();
@@ -123,6 +122,7 @@
             this.button_PlayPause.TabIndex = 7;
             this.button_PlayPause.Text = "Pause Simulation";
             this.button_PlayPause.UseVisualStyleBackColor = true;
+            this.button_PlayPause.Click += new System.EventHandler(this.button_PlayPause_Click);
             // 
             // button_Reset
             // 
@@ -134,6 +134,7 @@
             this.button_Reset.TabIndex = 6;
             this.button_Reset.Text = "Reset Simulation";
             this.button_Reset.UseVisualStyleBackColor = true;
+            this.button_Reset.Click += new System.EventHandler(this.button_Reset_Click);
             // 
             // button_Run
             // 
@@ -148,10 +149,8 @@
             // 
             // groupBox_RunTimeData
             // 
-            this.groupBox_RunTimeData.Controls.Add(this.label_Incorrect);
+            this.groupBox_RunTimeData.Controls.Add(this.label_Accuracy);
             this.groupBox_RunTimeData.Controls.Add(this.panel9);
-            this.groupBox_RunTimeData.Controls.Add(this.label_Correct);
-            this.groupBox_RunTimeData.Controls.Add(this.panel7);
             this.groupBox_RunTimeData.Controls.Add(this.label_MSEonValidationSet);
             this.groupBox_RunTimeData.Controls.Add(this.label_MSEonTrainingSet);
             this.groupBox_RunTimeData.Controls.Add(this.panel6);
@@ -166,63 +165,34 @@
             this.groupBox_RunTimeData.TabStop = false;
             this.groupBox_RunTimeData.Text = "Run-Time Data";
             // 
-            // label_Incorrect
+            // label_Accuracy
             // 
-            this.label_Incorrect.AutoSize = true;
-            this.label_Incorrect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Incorrect.Location = new System.Drawing.Point(135, 109);
-            this.label_Incorrect.Name = "label_Incorrect";
-            this.label_Incorrect.Size = new System.Drawing.Size(52, 13);
-            this.label_Incorrect.TabIndex = 17;
-            this.label_Incorrect.Text = "Incorrect:";
+            this.label_Accuracy.AutoSize = true;
+            this.label_Accuracy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Accuracy.Location = new System.Drawing.Point(6, 109);
+            this.label_Accuracy.Name = "label_Accuracy";
+            this.label_Accuracy.Size = new System.Drawing.Size(55, 13);
+            this.label_Accuracy.TabIndex = 17;
+            this.label_Accuracy.Text = "Accuracy:";
             // 
             // panel9
             // 
-            this.panel9.Controls.Add(this.output_Incorrect);
+            this.panel9.Controls.Add(this.output_Accuracy);
             this.panel9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel9.Location = new System.Drawing.Point(188, 101);
+            this.panel9.Location = new System.Drawing.Point(135, 101);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(66, 30);
+            this.panel9.Size = new System.Drawing.Size(119, 30);
             this.panel9.TabIndex = 16;
             // 
-            // output_Incorrect
+            // output_Accuracy
             // 
-            this.output_Incorrect.AutoSize = true;
-            this.output_Incorrect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.output_Incorrect.Location = new System.Drawing.Point(3, 8);
-            this.output_Incorrect.Name = "output_Incorrect";
-            this.output_Incorrect.Size = new System.Drawing.Size(27, 13);
-            this.output_Incorrect.TabIndex = 1;
-            this.output_Incorrect.Text = "N/A";
-            // 
-            // label_Correct
-            // 
-            this.label_Correct.AutoSize = true;
-            this.label_Correct.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Correct.Location = new System.Drawing.Point(6, 109);
-            this.label_Correct.Name = "label_Correct";
-            this.label_Correct.Size = new System.Drawing.Size(44, 13);
-            this.label_Correct.TabIndex = 15;
-            this.label_Correct.Text = "Correct:";
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.output_Correct);
-            this.panel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel7.Location = new System.Drawing.Point(56, 101);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(66, 30);
-            this.panel7.TabIndex = 14;
-            // 
-            // output_Correct
-            // 
-            this.output_Correct.AutoSize = true;
-            this.output_Correct.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.output_Correct.Location = new System.Drawing.Point(3, 8);
-            this.output_Correct.Name = "output_Correct";
-            this.output_Correct.Size = new System.Drawing.Size(27, 13);
-            this.output_Correct.TabIndex = 1;
-            this.output_Correct.Text = "N/A";
+            this.output_Accuracy.AutoSize = true;
+            this.output_Accuracy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.output_Accuracy.Location = new System.Drawing.Point(3, 8);
+            this.output_Accuracy.Name = "output_Accuracy";
+            this.output_Accuracy.Size = new System.Drawing.Size(27, 13);
+            this.output_Accuracy.TabIndex = 1;
+            this.output_Accuracy.Text = "N/A";
             // 
             // label_MSEonValidationSet
             // 
@@ -246,41 +216,41 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.output_NumMisclassified);
+            this.panel6.Controls.Add(this.output_ValidationMSE);
             this.panel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel6.Location = new System.Drawing.Point(135, 70);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(119, 30);
             this.panel6.TabIndex = 10;
             // 
-            // output_NumMisclassified
+            // output_ValidationMSE
             // 
-            this.output_NumMisclassified.AutoSize = true;
-            this.output_NumMisclassified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.output_NumMisclassified.Location = new System.Drawing.Point(3, 8);
-            this.output_NumMisclassified.Name = "output_NumMisclassified";
-            this.output_NumMisclassified.Size = new System.Drawing.Size(27, 13);
-            this.output_NumMisclassified.TabIndex = 1;
-            this.output_NumMisclassified.Text = "N/A";
+            this.output_ValidationMSE.AutoSize = true;
+            this.output_ValidationMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.output_ValidationMSE.Location = new System.Drawing.Point(3, 8);
+            this.output_ValidationMSE.Name = "output_ValidationMSE";
+            this.output_ValidationMSE.Size = new System.Drawing.Size(27, 13);
+            this.output_ValidationMSE.TabIndex = 1;
+            this.output_ValidationMSE.Text = "N/A";
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.output_OldCalculatedLine);
+            this.panel5.Controls.Add(this.output_TrainingMSE);
             this.panel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel5.Location = new System.Drawing.Point(135, 39);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(119, 30);
             this.panel5.TabIndex = 6;
             // 
-            // output_OldCalculatedLine
+            // output_TrainingMSE
             // 
-            this.output_OldCalculatedLine.AutoSize = true;
-            this.output_OldCalculatedLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.output_OldCalculatedLine.Location = new System.Drawing.Point(3, 8);
-            this.output_OldCalculatedLine.Name = "output_OldCalculatedLine";
-            this.output_OldCalculatedLine.Size = new System.Drawing.Size(27, 13);
-            this.output_OldCalculatedLine.TabIndex = 1;
-            this.output_OldCalculatedLine.Text = "N/A";
+            this.output_TrainingMSE.AutoSize = true;
+            this.output_TrainingMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.output_TrainingMSE.Location = new System.Drawing.Point(3, 8);
+            this.output_TrainingMSE.Name = "output_TrainingMSE";
+            this.output_TrainingMSE.Size = new System.Drawing.Size(27, 13);
+            this.output_TrainingMSE.TabIndex = 1;
+            this.output_TrainingMSE.Text = "N/A";
             // 
             // container
             // 
@@ -514,34 +484,53 @@
             // 
             chartArea1.Name = "chart_Display";
             this.chart_MSEs.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
             legend1.Name = "Legend1";
-            legend1.Position.Auto = false;
-            legend1.Position.Height = 8.463252F;
-            legend1.Position.Width = 30.37736F;
-            legend1.Position.X = 50F;
-            legend1.Position.Y = 3F;
             this.chart_MSEs.Legends.Add(legend1);
             this.chart_MSEs.Location = new System.Drawing.Point(0, 0);
             this.chart_MSEs.Name = "chart_MSEs";
             this.chart_MSEs.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             this.chart_MSEs.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            series1.BorderWidth = 5;
+            series1.BorderWidth = 3;
             series1.ChartArea = "chart_Display";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.IsXValueIndexed = true;
             series1.Legend = "Legend1";
             series1.Name = "MSE on Training Set";
-            series2.BorderWidth = 5;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.BorderWidth = 3;
             series2.ChartArea = "chart_Display";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.IsXValueIndexed = true;
             series2.Legend = "Legend1";
             series2.Name = "MSE on Validation Set";
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             this.chart_MSEs.Series.Add(series1);
             this.chart_MSEs.Series.Add(series2);
             this.chart_MSEs.Size = new System.Drawing.Size(531, 450);
             this.chart_MSEs.TabIndex = 0;
             this.chart_MSEs.Text = "chart1";
+            title1.Alignment = System.Drawing.ContentAlignment.TopCenter;
+            title1.DockedToChartArea = "chart_Display";
+            title1.IsDockedInsideChartArea = false;
+            title1.Name = "chart_Title";
+            title1.Text = "Epoch vs MSE";
+            title2.DockedToChartArea = "chart_Display";
+            title2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
+            title2.IsDockedInsideChartArea = false;
+            title2.Name = "yAxis_Title";
+            title2.Text = "MSE";
+            title3.Alignment = System.Drawing.ContentAlignment.BottomCenter;
+            title3.DockedToChartArea = "chart_Display";
+            title3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            title3.IsDockedInsideChartArea = false;
+            title3.Name = "xAxis_Title";
+            title3.Text = "Epoch";
+            this.chart_MSEs.Titles.Add(title1);
+            this.chart_MSEs.Titles.Add(title2);
+            this.chart_MSEs.Titles.Add(title3);
+            this.chart_MSEs.Visible = false;
             // 
             // Form1
             // 
@@ -559,8 +548,6 @@
             this.groupBox_RunTimeData.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -594,9 +581,9 @@
         private System.Windows.Forms.Label label_MSEonValidationSet;
         private System.Windows.Forms.Label label_MSEonTrainingSet;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Label output_NumMisclassified;
+        private System.Windows.Forms.Label output_ValidationMSE;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label output_OldCalculatedLine;
+        private System.Windows.Forms.Label output_TrainingMSE;
         private System.Windows.Forms.Panel container;
         private System.Windows.Forms.Label output_Epoch;
         private System.Windows.Forms.Label label_Epoch;
@@ -620,12 +607,9 @@
         private System.Windows.Forms.TextBox input_nNodesInNewHiddenLayer;
         private System.Windows.Forms.Label label_nEquals;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart_MSEs;
-        private System.Windows.Forms.Label label_Incorrect;
+        private System.Windows.Forms.Label label_Accuracy;
         private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Label output_Incorrect;
-        private System.Windows.Forms.Label label_Correct;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Label output_Correct;
+        private System.Windows.Forms.Label output_Accuracy;
     }
 }
 
