@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.Title title9 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title10 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title11 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title12 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button_PlayPause = new System.Windows.Forms.Button();
             this.button_Reset = new System.Windows.Forms.Button();
@@ -312,7 +312,7 @@
             this.input_nNodesInNewHiddenLayer.Name = "input_nNodesInNewHiddenLayer";
             this.input_nNodesInNewHiddenLayer.Size = new System.Drawing.Size(66, 20);
             this.input_nNodesInNewHiddenLayer.TabIndex = 4;
-            this.input_nNodesInNewHiddenLayer.Text = "4";
+            this.input_nNodesInNewHiddenLayer.Text = "16";
             this.input_nNodesInNewHiddenLayer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label_nEquals
@@ -486,52 +486,52 @@
             this.chart_MSEs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "chart_Display";
-            this.chart_MSEs.ChartAreas.Add(chartArea3);
-            legend3.Alignment = System.Drawing.StringAlignment.Center;
-            legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend3.Name = "Legend1";
-            this.chart_MSEs.Legends.Add(legend3);
+            chartArea4.Name = "chart_Display";
+            this.chart_MSEs.ChartAreas.Add(chartArea4);
+            legend4.Alignment = System.Drawing.StringAlignment.Center;
+            legend4.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend4.Name = "Legend1";
+            this.chart_MSEs.Legends.Add(legend4);
             this.chart_MSEs.Location = new System.Drawing.Point(-10, 0);
             this.chart_MSEs.Name = "chart_MSEs";
             this.chart_MSEs.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             this.chart_MSEs.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            series5.ChartArea = "chart_Display";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.IsXValueIndexed = true;
-            series5.Legend = "Legend1";
-            series5.Name = "MSE on Training Set";
-            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series6.ChartArea = "chart_Display";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.IsXValueIndexed = true;
-            series6.Legend = "Legend1";
-            series6.Name = "MSE on Validation Set";
-            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chart_MSEs.Series.Add(series5);
-            this.chart_MSEs.Series.Add(series6);
+            series7.ChartArea = "chart_Display";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.IsXValueIndexed = true;
+            series7.Legend = "Legend1";
+            series7.Name = "MSE on Training Set";
+            series7.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series8.ChartArea = "chart_Display";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.IsXValueIndexed = true;
+            series8.Legend = "Legend1";
+            series8.Name = "MSE on Validation Set";
+            series8.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chart_MSEs.Series.Add(series7);
+            this.chart_MSEs.Series.Add(series8);
             this.chart_MSEs.Size = new System.Drawing.Size(540, 450);
             this.chart_MSEs.TabIndex = 0;
             this.chart_MSEs.Text = "chart1";
-            title7.Alignment = System.Drawing.ContentAlignment.TopCenter;
-            title7.DockedToChartArea = "chart_Display";
-            title7.IsDockedInsideChartArea = false;
-            title7.Name = "chart_Title";
-            title7.Text = "Epoch vs MSE";
-            title8.DockedToChartArea = "chart_Display";
-            title8.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
-            title8.IsDockedInsideChartArea = false;
-            title8.Name = "yAxis_Title";
-            title8.Text = "MSE";
-            title9.Alignment = System.Drawing.ContentAlignment.BottomCenter;
-            title9.DockedToChartArea = "chart_Display";
-            title9.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            title9.IsDockedInsideChartArea = false;
-            title9.Name = "xAxis_Title";
-            title9.Text = "Epoch";
-            this.chart_MSEs.Titles.Add(title7);
-            this.chart_MSEs.Titles.Add(title8);
-            this.chart_MSEs.Titles.Add(title9);
+            title10.Alignment = System.Drawing.ContentAlignment.TopCenter;
+            title10.DockedToChartArea = "chart_Display";
+            title10.IsDockedInsideChartArea = false;
+            title10.Name = "chart_Title";
+            title10.Text = "Epoch vs MSE";
+            title11.DockedToChartArea = "chart_Display";
+            title11.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Left;
+            title11.IsDockedInsideChartArea = false;
+            title11.Name = "yAxis_Title";
+            title11.Text = "MSE";
+            title12.Alignment = System.Drawing.ContentAlignment.BottomCenter;
+            title12.DockedToChartArea = "chart_Display";
+            title12.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            title12.IsDockedInsideChartArea = false;
+            title12.Name = "xAxis_Title";
+            title12.Text = "Epoch";
+            this.chart_MSEs.Titles.Add(title10);
+            this.chart_MSEs.Titles.Add(title11);
+            this.chart_MSEs.Titles.Add(title12);
             this.chart_MSEs.Visible = false;
             // 
             // Form1
