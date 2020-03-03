@@ -223,6 +223,8 @@ namespace DigitClassifierWithErrorVisualization
                 SetUpTimer();
                 while (runmain)
                 {
+                    chart_MSEs.Height = splitContainer1.Panel2.Height;
+                    chart_MSEs.Width = splitContainer1.Panel2.Width;
                     while (runsim)
                     {
                         if (epoch % 10 == 0)

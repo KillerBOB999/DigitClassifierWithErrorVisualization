@@ -18,8 +18,6 @@ namespace DigitClassifierWithErrorVisualization
         List<Matrix<double>> hiddenLayers;
         Matrix<double> outputLayer;
 
-        List<Matrix<double>> layers = new List<Matrix<double>>();
-
         Matrix<double> desiredOutputLayer;
 
         // List of calculated error for each node in every layer
@@ -54,17 +52,14 @@ namespace DigitClassifierWithErrorVisualization
         {
             weights = new List<Matrix<double>>();
             hiddenLayers = new List<Matrix<double>>();
-            layers.Add(inputLayer);
             for (int layer = 0; layer < nodesPerLayer.Count - 1; ++layer)
             {
                 weights.Add(Matrix<double>.Build.Random(nodesPerLayer[layer + 1], nodesPerLayer[layer]));
                 if (layer > 0)
                 {
                     hiddenLayers.Add(Matrix<double>.Build.Dense(nodesPerLayer[layer], 1));
-                    layers.Add(hiddenLayers[hiddenLayers.Count - 1]);
                 }
             }
-            layers.Add(outputLayer);
         }
 
         public void Train(List<double> input, List<double> desiredOutputs, double learningRate)
@@ -94,7 +89,6 @@ namespace DigitClassifierWithErrorVisualization
                 }
             }
             outputLayer = currentProgress;
-            layers[layers.Count - 1] = outputLayer;
 
             // Convert the newly calculated output into a List
             // for easier use and for dependency segmentation
@@ -116,45 +110,68 @@ namespace DigitClassifierWithErrorVisualization
             // Derivative of Cost == 2(actualOutput - targetOutput)
             // Derivative of the activation == activation of Layer L-1
 
+            // HIDDEN-OUTPUT LAYER STUFF
             // Find output layer cost
             costPerNodePerLayer[costPerNodePerLayer.Count - 1] = LayerCost(ref outputLayer, ref desiredOutputLayer);
-            Matrix<double> activeLayer;
-            Matrix<double> activeWeights;
-            Matrix<double> layerLminus1;
-            Matrix<double> activeErrors;
-
-            for (int weightMatrixIndex = weights.Count - 1; weightMatrixIndex >= 0; --weightMatrixIndex)
+            if (hiddenLayers.Count > 0)
             {
-                activeLayer = layers[weightMatrixIndex + 1];
-                activeWeights = weights[weightMatrixIndex];
-                layerLminus1 = layers[weightMatrixIndex];
-                activeErrors = costPerNodePerLayer[weightMatrixIndex];
-                if (weightMatrixIndex != 0) costPerNodePerLayer[weightMatrixIndex - 1] = LayerCost(ref layerLminus1, ref activeErrors, ref activeWeights);
-
-                Matrix<double> gradient = FindGradient(ref activeLayer, ref layerLminus1, ref activeErrors, ref activeWeights);
-                weights[weightMatrixIndex] = weights[weightMatrixIndex] - learningRate * gradient;
-            }
-        }
-
-        private Matrix<double> FindGradient(ref Matrix<double> LayerL, ref Matrix<double> LayerLminus1, ref Matrix<double> errorOfLayerL, ref Matrix<double> weightsBetweenLayers)
-        {
-            Matrix<double> gradient = Matrix<double>.Build.Dense(weightsBetweenLayers.RowCount, weightsBetweenLayers.ColumnCount);
-            for (int rowInGradient = 0; rowInGradient < gradient.RowCount; ++rowInGradient)
-            {
-                for (int colInGradient = 0; colInGradient < gradient.ColumnCount; ++colInGradient)
+                for (int row = 0; row < weights[weights.Count - 1].RowCount; ++row)
                 {
-                    for (int rowInLayerLminus1 = 0; rowInLayerLminus1 < LayerLminus1.RowCount; ++rowInLayerLminus1)
+                    for (int col = 0; col < weights[weights.Count - 1].ColumnCount; ++col)
                     {
-                        gradient[rowInGradient, colInGradient] += (
-                                LayerL[rowInGradient, 0] * (1 - LayerL[rowInGradient, 0]) *
-                                2 * errorOfLayerL[rowInGradient, 0] *
-                                LayerLminus1[rowInLayerLminus1, 0]
-                                //weightsBetweenLayers[rowInGradient, colInGradient]
+                        weights[weights.Count - 1][row, col] -= (
+                            learningRate *
+                            2 * costPerNodePerLayer[costPerNodePerLayer.Count - 1][row, 0] *
+                            outputLayer[row, 0] * (1 - outputLayer[row, 0]) *
+                            hiddenLayers[hiddenLayers.Count - 1][col, 0]
+                            );
+                    }
+                }
+
+                // INPUT-HIDDEN / HIDDEN-HIDDEN LAYER STUFF
+                Matrix<double> activeLayer;
+                Matrix<double> activeWeights;
+                Matrix<double> layerLminus1;
+                Matrix<double> activeErrors;
+                // Find hidden layers costs
+                for (int costPerNodePerLayerIndex = costPerNodePerLayer.Count - 2; costPerNodePerLayerIndex >= 0; --costPerNodePerLayerIndex)
+                {
+                    activeLayer = hiddenLayers[costPerNodePerLayerIndex];
+                    activeWeights = weights[costPerNodePerLayerIndex + 1];
+                    layerLminus1 = costPerNodePerLayerIndex == 0 ? inputLayer : hiddenLayers[costPerNodePerLayerIndex - 1];
+                    activeErrors = costPerNodePerLayer[costPerNodePerLayerIndex + 1];
+                    costPerNodePerLayer[costPerNodePerLayerIndex] = LayerCost(ref activeLayer, ref activeErrors, ref activeWeights);
+                    activeWeights = weights[costPerNodePerLayerIndex];
+
+                    for (int row = 0; row < activeWeights.RowCount; ++row)
+                    {
+                        for (int col = 0; col < activeWeights.ColumnCount; ++col)
+                        {
+                            activeWeights[row, col] -= (
+                                learningRate *
+                                2 * costPerNodePerLayer[costPerNodePerLayerIndex][row, 0] *
+                                activeLayer[row, 0] * (1 - activeLayer[row, 0]) *
+                                layerLminus1[col, 0]
+                                );
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int row = 0; row < weights[weights.Count - 1].RowCount; ++row)
+                {
+                    for (int col = 0; col < weights[weights.Count - 1].ColumnCount; ++col)
+                    {
+                        weights[weights.Count - 1][row, col] -= (
+                            learningRate *
+                            2 * costPerNodePerLayer[costPerNodePerLayer.Count - 1][row, 0] *
+                            outputLayer[row, 0] * (1 - outputLayer[row, 0]) *
+                            inputLayer[col, 0]
                             );
                     }
                 }
             }
-            return gradient;
         }
 
         // Sigmoid activation function
